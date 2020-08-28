@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "bin": {
-    "frontend-project-lvl2": "gendiff.js"
+    "frontend-project-lvl2": "bin/gendiff.js"
   },
   "type": "module",
   "dependencies": {
