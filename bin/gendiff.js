@@ -1,4 +1,5 @@
 import program from 'commander';
+import genDiff from '../src/diff.js';
 
 program
   .version('0.0.1')
@@ -6,13 +7,8 @@ program
   .helpOption('-h, --help', 'output usage information')
   .option('-f, --format [type]', 'output format')
   .arguments('<filepath1> <filepath2>')
-  .action((filepath1, filepath2) => {
-    console.log('first file is', filepath1);
-    console.log('second file is', filepath2);
+  .action(async (filepath1, filepath2) => {
+    console.log(await genDiff(filepath1, filepath2));
   });
 
 program.parse(process.argv);
-
-if (program.format) {
-  console.log('format is', program.format);
-}
