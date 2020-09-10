@@ -1,6 +1,7 @@
-import { promises as fs } from 'fs';
+// @ts-check
+
 import path from 'path';
-import { has } from './utils.js';
+import { has, readFile } from './utils.js';
 
 const states = {
   added: 'added',
@@ -9,14 +10,14 @@ const states = {
   unchanged: 'unchanged',
 };
 
-const readJsonFile = async (filePath) => {
+export const readJsonFile = async (filePath) => {
   const absPath = path.resolve(process.cwd(), filePath);
-  const json = await fs.readFile(absPath, 'utf-8');
+  const json = await readFile(absPath);
 
   return JSON.parse(json);
 };
 
-const getDiff = (data1, data2) => {
+export const getDiff = (data1, data2) => {
   const keys1 = Object.keys(data1);
   const keys2 = Object.keys(data2);
   const uniqKeys = keys1
