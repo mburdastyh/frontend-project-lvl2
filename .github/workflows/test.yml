@@ -1,4 +1,4 @@
-name: linter-auto
+name: tests-auto
 
 on: [push]
 
