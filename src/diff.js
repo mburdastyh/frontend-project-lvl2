@@ -1,20 +1,13 @@
 // @ts-check
 
-import path from 'path';
 import { has, readFile } from './utils.js';
+import { parseFile } from './parsers.js';
 
 const states = {
   added: 'added',
   deleted: 'deleted',
   changed: 'changed',
   unchanged: 'unchanged',
-};
-
-export const readJsonFile = async (filePath) => {
-  const absPath = path.resolve(process.cwd(), filePath);
-  const json = await readFile(absPath);
-
-  return JSON.parse(json);
 };
 
 export const getDiff = (data1, data2) => {
@@ -62,8 +55,8 @@ export const getDiff = (data1, data2) => {
 };
 
 export default async (filePath1, filePath2) => {
-  const obj1 = await readJsonFile(filePath1);
-  const obj2 = await readJsonFile(filePath2);
+  const obj1 = await parseFile(filePath1);
+  const obj2 = await parseFile(filePath2);
 
   return getDiff(obj1, obj2);
 };

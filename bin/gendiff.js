@@ -8,7 +8,12 @@ program
   .option('-f, --format [type]', 'output format')
   .arguments('<filepath1> <filepath2>')
   .action(async (filepath1, filepath2) => {
-    console.log(await genDiff(filepath1, filepath2));
+    try {
+      const diff = await genDiff(filepath1, filepath2);
+      console.log(diff);
+    } catch (error) {
+      console.error(error);
+    }
   });
 
 program.parse(process.argv);

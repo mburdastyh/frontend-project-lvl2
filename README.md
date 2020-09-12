@@ -20,3 +20,6 @@ $ make test
 
 Find a difference between two .json files:
 [![asciicast](https://asciinema.org/a/4NDKOUQANYBMbi8YOY7nbVOcI.svg)](https://asciinema.org/a/4NDKOUQANYBMbi8YOY7nbVOcI)
+
+Find a difference between two .yaml files:
+[![asciicast](https://asciinema.org/a/NHkSx8vq5ezzmutGgp7rNdo9Y.svg)](https://asciinema.org/a/NHkSx8vq5ezzmutGgp7rNdo9Y)

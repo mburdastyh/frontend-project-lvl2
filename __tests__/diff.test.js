@@ -1,21 +1,7 @@
 // @ts-check
-import path from 'path';
-import diff, { readJsonFile, getDiff } from '../src/diff.js';
-import { readFile } from '../src/utils.js';
 
-const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
-
-test('read files', async () => {
-  const actualData = await readJsonFile(getFixturePath('jsonTest1.json'));
-  const expectedData = {
-    host: 'hexlet.io',
-    timeout: 500,
-    proxy: '123.234.53.22',
-    follow: false,
-  };
-
-  expect(actualData).toEqual(expectedData);
-});
+import diff, { getDiff } from '../src/diff.js';
+import { readFile, getFixturePath } from '../src/utils.js';
 
 describe('getDiff', () => {
   test('emptyObjects', () => {
