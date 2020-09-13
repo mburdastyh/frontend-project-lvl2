@@ -1,10 +1,12 @@
 import path from 'path';
 import yaml from 'js-yaml';
+import ini from 'ini';
 import { readFile } from './utils.js';
 
 const mapping = {
   json: (content) => JSON.parse(content),
   yaml: (content) => yaml.safeLoad(content),
+  ini: (content) => ini.decode(content),
 };
 
 export const parseFile = async (filePath) => {

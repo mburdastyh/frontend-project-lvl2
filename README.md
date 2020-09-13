@@ -23,3 +23,6 @@ Find a difference between two .json files:
 
 Find a difference between two .yaml files:
 [![asciicast](https://asciinema.org/a/NHkSx8vq5ezzmutGgp7rNdo9Y.svg)](https://asciinema.org/a/NHkSx8vq5ezzmutGgp7rNdo9Y)
+
+Find a difference between two .ini files:
+[![asciicast](https://asciinema.org/a/lcPIt4xVPW6XVUXyfZ1YNfgXU.svg)](https://asciinema.org/a/lcPIt4xVPW6XVUXyfZ1YNfgXU)
