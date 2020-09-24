@@ -1,7 +1,0 @@
-{
-    key1: unchange
-  - key2: change
-  + key2: Change!
-  - key3: delete
-  + key4: add
-}

@@ -26,3 +26,6 @@ Find a difference between two .yaml files:
 
 Find a difference between two .ini files:
 [![asciicast](https://asciinema.org/a/lcPIt4xVPW6XVUXyfZ1YNfgXU.svg)](https://asciinema.org/a/lcPIt4xVPW6XVUXyfZ1YNfgXU)
+
+Find a difference between two files with nested structure
+[![asciicast](https://asciinema.org/a/KAkwHdc9zcMW40JbG3wK291CL.svg)](https://asciinema.org/a/KAkwHdc9zcMW40JbG3wK291CL)

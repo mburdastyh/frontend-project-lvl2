@@ -2,7 +2,7 @@ install:
 	npm install
 
 start:
-	node bin/gendiff.js
+	npm start --  __fixtures__/jsonTest1.json __fixtures__/jsonTest2.json
 
 publish:
 	npm publish --dry-run

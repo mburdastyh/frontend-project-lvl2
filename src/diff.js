@@ -13,12 +13,9 @@ const states = {
 const spaces = (level = 1) => '  '.repeat(level);
 
 const convertObjToString = (obj, level) => {
-  if (typeof obj !== 'object') {
-    return `${obj}`;
-  }
+  if (typeof obj !== 'object') return `${obj}`;
 
   const keys = Object.keys(obj).sort((a, b) => a.localeCompare(b));
-
   const lines = keys.map((key) => `${spaces(level + 2)}${key}: ${convertObjToString(obj[key], level + 2)}`);
 
   return `{\n${lines.join('\n')}\n${spaces(level)}}`;
@@ -34,7 +31,9 @@ const convertObjToString = (obj, level) => {
  *
  * @param {DiffObject} diffObj diff object
  */
-const formatter = (diffObj, level = 0) => {
+export const stylish = (diffObj, level = 0) => {
+  if (Object.keys(diffObj).length === 0) return '{}';
+
   const diffKeys = Object.keys(diffObj).sort((a, b) => a.localeCompare(b));
 
   const diffContent = diffKeys.map((key) => {
@@ -47,7 +46,7 @@ const formatter = (diffObj, level = 0) => {
         return `${spaces(level + 1)}- ${key}: ${convertObjToString(value[0], level + 2)}`;
       case states.changed:
         if (children) {
-          return `${spaces(level + 2)}${key}: ${formatter(children, level + 2)}`;
+          return `${spaces(level + 2)}${key}: ${stylish(children, level + 2)}`;
         }
         return [
           `${spaces(level + 1)}- ${key}: ${convertObjToString(value[0], level + 2)}`,
@@ -118,5 +117,5 @@ export default async (filePath1, filePath2) => {
   const obj1 = await parseFile(filePath1);
   const obj2 = await parseFile(filePath2);
 
-  return formatter(getDiff(obj1, obj2));
+  return stylish(getDiff(obj1, obj2));
 };
