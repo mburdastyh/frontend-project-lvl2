@@ -8,3 +8,5 @@ export const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtur
 export const has = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
 
 export const readFile = (absfilePath) => fs.readFile(absfilePath, 'utf-8');
+
+export const compareTwoObjects = (obj1, obj2) => JSON.stringify(obj1) === JSON.stringify(obj2);
