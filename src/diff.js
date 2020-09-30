@@ -1,68 +1,9 @@
 // @ts-check
 
-import { has, readFile, compareTwoObjects } from './utils.js';
+import { has, compareTwoObjects } from './utils.js';
 import { parseFile } from './parsers.js';
-
-const states = {
-  added: 'added',
-  deleted: 'deleted',
-  changed: 'changed',
-  unchanged: 'unchanged',
-};
-
-const spaces = (level = 1) => '  '.repeat(level);
-
-const convertObjToString = (obj, level) => {
-  if (typeof obj !== 'object') return `${obj}`;
-
-  const keys = Object.keys(obj).sort((a, b) => a.localeCompare(b));
-  const lines = keys.map((key) => `${spaces(level + 2)}${key}: ${convertObjToString(obj[key], level + 2)}`);
-
-  return `{\n${lines.join('\n')}\n${spaces(level)}}`;
-};
-
-/**
- * @typedef {{
- *  [key: string]: { state: string, value: object[], children?: DiffObject }
- * }} DiffObject
- */
-
-/**
- *
- * @param {DiffObject} diffObj diff object
- */
-export const stylish = (diffObj, level = 0) => {
-  if (Object.keys(diffObj).length === 0) return '{}';
-
-  const diffKeys = Object.keys(diffObj).sort((a, b) => a.localeCompare(b));
-
-  const diffContent = diffKeys.map((key) => {
-    const { state, value, children } = diffObj[key];
-
-    switch (state) {
-      case states.added:
-        return `${spaces(level + 1)}+ ${key}: ${convertObjToString(value[0], level + 2)}`;
-      case states.deleted:
-        return `${spaces(level + 1)}- ${key}: ${convertObjToString(value[0], level + 2)}`;
-      case states.changed:
-        if (children) {
-          return `${spaces(level + 2)}${key}: ${stylish(children, level + 2)}`;
-        }
-        return [
-          `${spaces(level + 1)}- ${key}: ${convertObjToString(value[0], level + 2)}`,
-          `${spaces(level + 1)}+ ${key}: ${convertObjToString(value[1], level + 2)}`,
-        ];
-      case states.unchanged:
-        return `${spaces(level + 2)}${key}: ${convertObjToString(value[0], level + 3)}`;
-      default:
-        throw new Error('Wrong state!');
-    }
-  })
-    .flat()
-    .join('\n');
-
-  return `{\n${diffContent}\n${spaces(level)}}`;
-};
+import getFormatter from './formatters/index.js';
+import { states } from './states.js';
 
 export const getDiff = (data1, data2) => {
   const keys1 = Object.keys(data1);
@@ -113,9 +54,10 @@ export const getDiff = (data1, data2) => {
   return diff;
 };
 
-export default async (filePath1, filePath2) => {
+export default async (filePath1, filePath2, format) => {
   const obj1 = await parseFile(filePath1);
   const obj2 = await parseFile(filePath2);
+  const formatter = getFormatter(format);
 
-  return stylish(getDiff(obj1, obj2));
+  return formatter(getDiff(obj1, obj2));
 };

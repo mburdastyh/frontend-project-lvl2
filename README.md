@@ -18,14 +18,17 @@ $ make test
 
 ## Example
 
-Find a difference between two .json files:
+Find a difference between two files with nested structure and represent with a stylish formatter
+[![asciicast](https://asciinema.org/a/Lfhzov1sy3JHiJY55UOeEPvbs.svg)](https://asciinema.org/a/Lfhzov1sy3JHiJY55UOeEPvbs)
+
+Find a difference between two files with nested structure and represent with a plain formatter
+[![asciicast](https://asciinema.org/a/3OTCC68LXd1Tf91Vi8GTgiLJS.svg)](https://asciinema.org/a/3OTCC68LXd1Tf91Vi8GTgiLJS)
+
+Find a difference between two flat .json files:
 [![asciicast](https://asciinema.org/a/4NDKOUQANYBMbi8YOY7nbVOcI.svg)](https://asciinema.org/a/4NDKOUQANYBMbi8YOY7nbVOcI)
 
-Find a difference between two .yaml files:
+Find a difference between two flat .yaml files:
 [![asciicast](https://asciinema.org/a/NHkSx8vq5ezzmutGgp7rNdo9Y.svg)](https://asciinema.org/a/NHkSx8vq5ezzmutGgp7rNdo9Y)
 
-Find a difference between two .ini files:
+Find a difference between two flat .ini files:
 [![asciicast](https://asciinema.org/a/lcPIt4xVPW6XVUXyfZ1YNfgXU.svg)](https://asciinema.org/a/lcPIt4xVPW6XVUXyfZ1YNfgXU)
-
-Find a difference between two files with nested structure
-[![asciicast](https://asciinema.org/a/KAkwHdc9zcMW40JbG3wK291CL.svg)](https://asciinema.org/a/KAkwHdc9zcMW40JbG3wK291CL)
