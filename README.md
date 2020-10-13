@@ -24,6 +24,9 @@ Find a difference between two files with nested structure and represent with a s
 Find a difference between two files with nested structure and represent with a plain formatter
 [![asciicast](https://asciinema.org/a/3OTCC68LXd1Tf91Vi8GTgiLJS.svg)](https://asciinema.org/a/3OTCC68LXd1Tf91Vi8GTgiLJS)
 
+Find a difference between two files with nested structure and represent with a json formatter
+[![asciicast](https://asciinema.org/a/Ga6aU2gBZ5GCIuuMq7gp7Peww.svg)](https://asciinema.org/a/Ga6aU2gBZ5GCIuuMq7gp7Peww)
+
 Find a difference between two flat .json files:
 [![asciicast](https://asciinema.org/a/4NDKOUQANYBMbi8YOY7nbVOcI.svg)](https://asciinema.org/a/4NDKOUQANYBMbi8YOY7nbVOcI)
 
