@@ -9,9 +9,9 @@ program
   .helpOption('-h, --help', 'output usage information')
   .option('-f, --format [type]', 'output format', 'stylish')
   .arguments('<filepath1> <filepath2>')
-  .action(async (filepath1, filepath2) => {
+  .action((filepath1, filepath2) => {
     try {
-      const diff = await genDiff(filepath1, filepath2, program.format);
+      const diff = genDiff(filepath1, filepath2, program.format);
       console.log(diff);
     } catch (error) {
       console.error(error);

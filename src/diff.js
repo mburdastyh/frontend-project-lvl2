@@ -1,14 +1,14 @@
 // @ts-check
 
 import path from 'path';
-import { promises as fs } from 'fs';
+import fs from 'fs';
 import parseFile from './parsers.js';
 import getFormatter from './formatters/index.js';
 import states from './states.js';
 
 const has = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
 
-const readFile = (absfilePath) => fs.readFile(absfilePath, 'utf-8');
+const readFile = (absfilePath) => fs.readFileSync(absfilePath, 'utf-8');
 
 const getDiff = (data1, data2) => {
   const keys1 = Object.keys(data1);
@@ -40,14 +40,14 @@ const getDiff = (data1, data2) => {
   return diff;
 };
 
-export default async (filePath1, filePath2, format) => {
-  const content1 = await readFile(path.resolve(process.cwd(), filePath1));
+export default (filePath1, filePath2, format) => {
+  const content1 = readFile(path.resolve(process.cwd(), filePath1));
   const type1 = path.extname(filePath1).slice(1);
-  const obj1 = await parseFile(content1, type1);
+  const obj1 = parseFile(content1, type1);
 
-  const content2 = await readFile(path.resolve(process.cwd(), filePath2));
+  const content2 = readFile(path.resolve(process.cwd(), filePath2));
   const type2 = path.extname(filePath2).slice(1);
-  const obj2 = await parseFile(content2, type2);
+  const obj2 = parseFile(content2, type2);
 
   const formatter = getFormatter(format);
 
