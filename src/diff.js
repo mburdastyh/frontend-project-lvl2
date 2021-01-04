@@ -1,62 +1,54 @@
 // @ts-check
 
-import { has, compareTwoObjects } from './utils.js';
-import { parseFile } from './parsers.js';
+import path from 'path';
+import { promises as fs } from 'fs';
+import parseFile from './parsers.js';
 import getFormatter from './formatters/index.js';
-import { states } from './states.js';
+import states from './states.js';
 
-export const getDiff = (data1, data2) => {
+const has = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
+
+const readFile = (absfilePath) => fs.readFile(absfilePath, 'utf-8');
+
+const getDiff = (data1, data2) => {
   const keys1 = Object.keys(data1);
   const keys2 = Object.keys(data2);
   const uniqKeys = keys1
     .concat(keys2)
     .filter((key, index, arr) => arr.indexOf(key) === index);
 
-  const diff = uniqKeys.reduce((acc, key) => {
+  const diff = uniqKeys.map((key) => {
     if (!has(data1, key)) {
-      acc[key] = { state: states.added, value: [data2[key]] };
-      return acc;
+      return { key, value: [data2[key]], state: states.added };
     }
 
     if (!has(data2, key)) {
-      acc[key] = { state: states.deleted, value: [data1[key]] };
-      return acc;
+      return { key, value: [data1[key]], state: states.deleted };
     }
 
     if (typeof data1[key] === 'object' && typeof data2[key] === 'object') {
-      const isEqual = compareTwoObjects(data1[key], data2[key]);
-      if (isEqual) {
-        acc[key] = { state: states.unchanged, value: [data1[key]] };
-        return acc;
-      }
-
-      const inner = getDiff(data1[key], data2[key]);
-      acc[key] = { state: states.changed, children: inner };
-
-      return acc;
+      return { key, children: getDiff(data1[key], data2[key]), state: states.nested };
     }
 
-    if (typeof data1[key] !== 'object' && typeof data2[key] !== 'object') {
-      if (data1[key] !== data2[key]) {
-        acc[key] = { state: states.changed, value: [data1[key], data2[key]] };
-      } else {
-        acc[key] = { state: states.unchanged, value: [data1[key]] };
-      }
-
-      return acc;
+    if (data1[key] === data2[key]) {
+      return { key, value: data1[key], state: states.unchanged };
     }
 
-    acc[key] = { state: states.changed, value: [data1[key], data2[key]] };
-
-    return acc;
-  }, {});
+    return { key, value: [data1[key], data2[key]], state: states.changed };
+  }, []);
 
   return diff;
 };
 
 export default async (filePath1, filePath2, format) => {
-  const obj1 = await parseFile(filePath1);
-  const obj2 = await parseFile(filePath2);
+  const content1 = await readFile(path.resolve(process.cwd(), filePath1));
+  const type1 = path.extname(filePath1).slice(1);
+  const obj1 = await parseFile(content1, type1);
+
+  const content2 = await readFile(path.resolve(process.cwd(), filePath2));
+  const type2 = path.extname(filePath2).slice(1);
+  const obj2 = await parseFile(content2, type2);
+
   const formatter = getFormatter(format);
 
   return formatter(getDiff(obj1, obj2));

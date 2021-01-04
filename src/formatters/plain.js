@@ -1,11 +1,14 @@
-import { states } from '../states.js';
+import states from '../states.js';
 
 const convertObjToString = (obj) => {
-  if (typeof obj === 'string') return `'${obj}'`;
-
-  if (typeof obj === 'object') return '[complex value]';
-
-  return `${obj}`;
+  switch (typeof obj) {
+    case 'string':
+      return `'${obj}'`;
+    case 'object':
+      return '[complex value]';
+    default:
+      return `${obj}`;
+  }
 };
 
 /**
@@ -19,12 +22,18 @@ const convertObjToString = (obj) => {
   * @param {DiffObject} diffObj diff object
   */
 const plain = (diffObj, path = '') => {
-  if (Object.keys(diffObj).length === 0) return '{}';
+  diffObj.sort((a, b) => a.key.localeCompare(b.key));
 
-  const diffKeys = Object.keys(diffObj).sort((a, b) => a.localeCompare(b));
+  const diffContent = diffObj.map((node) => {
+    const {
+      key,
+      value,
+      children,
+      state,
+    } = node;
 
-  const diffContent = diffKeys.map((key) => {
-    const { state, value, children } = diffObj[key];
+    if (diffObj.length === 0) return '';
+
     const keyFromRoot = path === '' ? key : `${path}.${key}`;
 
     switch (state) {
@@ -32,10 +41,9 @@ const plain = (diffObj, path = '') => {
         return `Property '${keyFromRoot}' was added with value: ${convertObjToString(value[0])}`;
       case states.deleted:
         return `Property '${keyFromRoot}' was removed`;
+      case states.nested:
+        return plain(children, keyFromRoot);
       case states.changed:
-        if (children) {
-          return plain(children, keyFromRoot);
-        }
         return `Property '${keyFromRoot}' was updated. From ${convertObjToString(value[0])} to ${convertObjToString(value[1])}`;
       case states.unchanged:
         return null;

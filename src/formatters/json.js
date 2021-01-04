@@ -1,5 +1,3 @@
-import { states } from '../states.js';
-
 /**
  * @typedef {{
   *  [key: string]: { state: string, value: object[], children?: DiffObject }
@@ -10,6 +8,6 @@ import { states } from '../states.js';
   *
   * @param {DiffObject} diffObj diff object
   */
-const json = (diffObj) => JSON.stringify(diffObj, null, 2);
+const json = (diffObj) => JSON.stringify(diffObj);
 
 export default json;

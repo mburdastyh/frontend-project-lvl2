@@ -1,4 +1,4 @@
-name: linter-auto
+name: linter-and-tests-auto
 
 on: [push]
 
@@ -27,4 +27,20 @@ jobs:
         with:
           coverageCommand: make test-coverage
           debug: true
+  
+  check-by-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '13.x'
       
+      - name: install 
+        run: 
+          npm ci
+
+      - name: run tests
+        run:
+          npm run test

@@ -1,4 +1,4 @@
-import { states } from '../states.js';
+import states from '../states.js';
 
 const spaces = (level = 1) => '  '.repeat(level);
 
@@ -22,28 +22,30 @@ const convertObjToString = (obj, level) => {
   * @param {DiffObject} diffObj diff object
   */
 const stylish = (diffObj, level = 0) => {
-  if (Object.keys(diffObj).length === 0) return '{}';
+  diffObj.sort((a, b) => a.key.localeCompare(b.key));
 
-  const diffKeys = Object.keys(diffObj).sort((a, b) => a.localeCompare(b));
-
-  const diffContent = diffKeys.map((key) => {
-    const { state, value, children } = diffObj[key];
+  const diffContent = diffObj.map((node) => {
+    const {
+      key,
+      value,
+      children,
+      state,
+    } = node;
 
     switch (state) {
       case states.added:
         return `${spaces(level + 1)}+ ${key}: ${convertObjToString(value[0], level + 2)}`;
       case states.deleted:
         return `${spaces(level + 1)}- ${key}: ${convertObjToString(value[0], level + 2)}`;
+      case states.nested:
+        return `${spaces(level + 2)}${key}: ${stylish(children, level + 2)}`;
       case states.changed:
-        if (children) {
-          return `${spaces(level + 2)}${key}: ${stylish(children, level + 2)}`;
-        }
         return [
           `${spaces(level + 1)}- ${key}: ${convertObjToString(value[0], level + 2)}`,
           `${spaces(level + 1)}+ ${key}: ${convertObjToString(value[1], level + 2)}`,
         ];
       case states.unchanged:
-        return `${spaces(level + 2)}${key}: ${convertObjToString(value[0], level + 3)}`;
+        return `${spaces(level + 2)}${key}: ${convertObjToString(value, level + 3)}`;
       default:
         throw new Error('Wrong state!');
     }

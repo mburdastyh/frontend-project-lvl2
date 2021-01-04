@@ -20,12 +20,9 @@
     "eslint": "^7.6.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.0",
-    "jest": "^26.4.2",
-    "lodash": "^4.17.20"
+    "jest": "^26.4.2"
   },
   "scripts": {
-    "test": "jest",
-    "lint": "npx eslint .",
     "start": "node bin/gendiff.js"
   },
   "repository": {

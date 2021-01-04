@@ -1,108 +1,10 @@
 // @ts-check
-import _ from 'lodash';
-import diff, { getDiff } from '../src/diff.js';
-import { readFile, getFixturePath } from '../src/utils.js';
+import path from 'path';
+import { promises as fs } from 'fs';
+import diff from '../src/diff.js';
 
-describe('getDiff', () => {
-  let initData;
-  let changedData;
-
-  beforeEach(() => {
-    initData = {
-      key: {
-        innerKey: 'innerValue',
-      },
-    };
-
-    changedData = _.cloneDeep(initData);
-  });
-
-  test('equal objects', () => {
-    const res = {
-      key: { state: 'unchanged', value: [{ innerKey: 'innerValue' }] },
-    };
-
-    expect(getDiff(initData, initData)).toEqual(res);
-  });
-
-  test('key is added', () => {
-    changedData.newKey = 'newValue';
-
-    const res = {
-      key: { state: 'unchanged', value: [{ innerKey: 'innerValue' }] },
-      newKey: { state: 'added', value: ['newValue'] },
-    };
-
-    expect(getDiff(initData, changedData)).toEqual(res);
-  });
-
-  test('key is deleted', () => {
-    changedData.newKey = 'newValue';
-
-    const res = {
-      key: { state: 'unchanged', value: [{ innerKey: 'innerValue' }] },
-      newKey: { state: 'added', value: ['newValue'] },
-    };
-
-    expect(getDiff(initData, changedData)).toEqual(res);
-  });
-
-  test('key is changed', () => {
-    changedData.key = 'newValue';
-
-    const res = {
-      key: { state: 'changed', value: [{ innerKey: 'innerValue' }, 'newValue'] },
-    };
-
-    expect(getDiff(initData, changedData)).toEqual(res);
-  });
-
-  test('inner key is added', () => {
-    changedData.key.newInnerKey = 'newInnerValue';
-
-    const res = {
-      key: {
-        state: 'changed',
-        children: {
-          innerKey: { state: 'unchanged', value: ['innerValue'] },
-          newInnerKey: { state: 'added', value: ['newInnerValue'] },
-        },
-      },
-    };
-
-    expect(getDiff(initData, changedData)).toEqual(res);
-  });
-
-  test('inner key is deleted', () => {
-    delete changedData.key.innerKey;
-
-    const res = {
-      key: {
-        state: 'changed',
-        children: {
-          innerKey: { state: 'deleted', value: ['innerValue'] },
-        },
-      },
-    };
-
-    expect(getDiff(initData, changedData)).toEqual(res);
-  });
-
-  test('inner key is changed', () => {
-    changedData.key.innerKey = 'newInnerValue';
-
-    const res = {
-      key: {
-        state: 'changed',
-        children: {
-          innerKey: { state: 'changed', value: ['innerValue', 'newInnerValue'] },
-        },
-      },
-    };
-
-    expect(getDiff(initData, changedData)).toEqual(res);
-  });
-});
+const readFile = (absfilePath) => fs.readFile(absfilePath, 'utf-8');
+const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
 
 describe('diff', () => {
   test('Stylish formatter for different json files', async () => {
@@ -123,6 +25,6 @@ describe('diff', () => {
     const actualData = await diff(getFixturePath('jsonTest1.json'), getFixturePath('jsonTest2.json'), 'json');
     const expectedData = await readFile(getFixturePath('resultJsonForJson.txt'));
 
-    expect(actualData).toEqual(expectedData);
+    expect(expectedData).toEqual(actualData);
   });
 });

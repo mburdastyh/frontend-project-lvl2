@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 import program from 'commander';
-import formatters from '../src/formatters/index.js';
 import genDiff from '../src/diff.js';
 
 program
