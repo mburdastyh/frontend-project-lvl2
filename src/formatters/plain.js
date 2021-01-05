@@ -1,6 +1,10 @@
 import states from '../states.js';
 
 const convertObjToString = (obj) => {
+  if (obj === null) {
+    return 'null';
+  }
+
   switch (typeof obj) {
     case 'string':
       return `'${obj}'`;
@@ -22,6 +26,7 @@ const convertObjToString = (obj) => {
   * @param {DiffObject} diffObj diff object
   */
 const plain = (diffObj, path = '') => {
+  // eslint-disable-next-line
   diffObj.sort((a, b) => a.key.localeCompare(b.key));
 
   const diffContent = diffObj.map((node) => {

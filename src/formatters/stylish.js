@@ -3,9 +3,13 @@ import states from '../states.js';
 const spaces = (level = 1) => '  '.repeat(level);
 
 const convertObjToString = (obj, level) => {
+  if (obj === null) {
+    return 'null';
+  }
+
   if (typeof obj !== 'object') return `${obj}`;
 
-  const keys = Object.keys(obj).sort((a, b) => a.localeCompare(b));
+  const keys = Object.keys(obj);
   const lines = keys.map((key) => `${spaces(level + 2)}${key}: ${convertObjToString(obj[key], level + 2)}`);
 
   return `{\n${lines.join('\n')}\n${spaces(level)}}`;
@@ -22,6 +26,7 @@ const convertObjToString = (obj, level) => {
   * @param {DiffObject} diffObj diff object
   */
 const stylish = (diffObj, level = 0) => {
+  // eslint-disable-next-line
   diffObj.sort((a, b) => a.key.localeCompare(b.key));
 
   const diffContent = diffObj.map((node) => {

@@ -40,7 +40,7 @@ const getDiff = (data1, data2) => {
   return diff;
 };
 
-export default (filePath1, filePath2, format) => {
+export default (filePath1, filePath2, format = 'stylish') => {
   const content1 = readFile(path.resolve(process.cwd(), filePath1));
   const type1 = path.extname(filePath1).slice(1);
   const obj1 = parseFile(content1, type1);
