@@ -4,6 +4,7 @@ import ini from 'ini';
 const mapping = {
   json: (content) => JSON.parse(content),
   yaml: (content) => yaml.safeLoad(content),
+  yml: (content) => yaml.safeLoad(content),
   ini: (content) => ini.decode(content),
 };
 
